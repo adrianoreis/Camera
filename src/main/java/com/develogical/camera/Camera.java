@@ -5,10 +5,12 @@ public class Camera {
     private boolean isCameraOn = false;
     private MemoryCard memory;
     private WriteCompleteListener listener;
+    private boolean isCopying = false;
 
     public void pressShutter() {
         if(isCameraOn){
             memory.write(sensor.readData(),listener);
+            isCopying = true;
         }
     }
 
@@ -18,7 +20,7 @@ public class Camera {
     }
 
     public void powerOff() {
-        if(isCameraOn){
+        if(isCameraOn && !isCopying){
             sensor.powerDown();
             isCameraOn = false;
         }

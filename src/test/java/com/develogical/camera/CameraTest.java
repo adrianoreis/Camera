@@ -51,4 +51,12 @@ public class CameraTest {
         camera.pressShutter();
         verify(memoryCard).write(eq(new byte[]{1, 2}), any());
     }
+
+    @Test
+    public void cameraDoesNotSwitchOffWhenDataIsBeingWritten()  {
+        camera.powerOn();
+        camera.pressShutter();
+        camera.powerOff();
+        verify(sensor, never()).powerDown();
+    }
 }
