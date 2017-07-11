@@ -3,9 +3,13 @@ package com.develogical.camera;
 public class Camera {
     private Sensor sensor;
     private boolean isCameraOn = false;
+    private MemoryCard memory;
+    private WriteCompleteListener listener;
 
     public void pressShutter() {
-        // not implemented
+        if(isCameraOn){
+            memory.write(sensor.readData(),listener);
+        }
     }
 
     public void powerOn() {
