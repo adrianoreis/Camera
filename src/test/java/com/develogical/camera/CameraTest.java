@@ -21,6 +21,7 @@ public class CameraTest {
     private MemoryCard memoryCard;
     @Captor
     private ArgumentCaptor<WriteCompleteListener> captor;
+
     @Before
     public void setUp() {
         when(sensor.readData()).thenReturn(new byte[]{1, 2});
@@ -53,7 +54,7 @@ public class CameraTest {
     }
 
     @Test
-    public void cameraDoesNotSwitchOffWhenDataIsBeingWritten()  {
+    public void cameraDoesNotSwitchOffWhenDataIsBeingWritten() {
         camera.powerOn();
         camera.pressShutter();
         camera.powerOff();
@@ -61,10 +62,10 @@ public class CameraTest {
     }
 
     @Test
-    public void powerDownTheSensorWhenWritingDataIsComplete()  {
+    public void powerDownTheSensorWhenWritingDataIsComplete() {
         camera.powerOn();
         camera.pressShutter();
-        verify(memoryCard).write(eq(new byte[]{1,2}), captor.capture());
+        verify(memoryCard).write(eq(new byte[]{1, 2}), captor.capture());
         captor.getValue().writeComplete();
         camera.powerOff();
         verify(sensor).powerDown();
