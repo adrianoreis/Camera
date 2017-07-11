@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -18,9 +19,8 @@ public class CameraTest {
     private Sensor sensor;
     @Mock
     private MemoryCard memoryCard;
-    @Mock
-    private WriteCompleteListener listener;
-
+    @Captor
+    private ArgumentCaptor<WriteCompleteListener> captor;
     @Before
     public void setUp() {
         when(sensor.readData()).thenReturn(new byte[]{1, 2});
@@ -58,5 +58,15 @@ public class CameraTest {
         camera.pressShutter();
         camera.powerOff();
         verify(sensor, never()).powerDown();
+    }
+
+    @Test
+    public void powerDownTheSensorWhenWritingDataIsComplete()  {
+        camera.powerOn();
+        camera.pressShutter();
+        verify(memoryCard).write(eq(new byte[]{1,2}), captor.capture());
+        captor.getValue().writeComplete();
+        camera.powerOff();
+        verify(sensor).powerDown();
     }
 }
