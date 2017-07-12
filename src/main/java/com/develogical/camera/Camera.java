@@ -4,13 +4,11 @@ public class Camera implements WriteCompleteListener {
     private Sensor sensor;
     private boolean isCameraOn = false;
     private MemoryCard memory;
-    private WriteCompleteListener listener;
     private boolean isCopying = false;
 
-    public Camera(Sensor sensor, MemoryCard memory, WriteCompleteListener listener) {
+    public Camera(Sensor sensor, MemoryCard memory) {
         this.memory = memory;
         this.sensor = sensor;
-        this.listener = listener;
     }
 
     public void pressShutter() {
